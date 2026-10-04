@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ICAR Quiz Challenge</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f7f2;
+    color: #1d2b20;
+}
+
+header {
+    background: linear-gradient(135deg, #126b3a, #239653);
+    color: white;
+    text-align: center;
+    padding: 35px 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 17px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+/* HOME */
+#home {
+    display: block;
+}
+
+.quiz-card {
+    background: white;
+    margin: 18px 0;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: 0.2s;
+    border-left: 6px solid #198754;
+}
+
+.quiz-card:hover {
+    transform: translateY(-3px);
+}
+
+.quiz-card h2 {
+    margin-top: 0;
+    color: #126b3a;
+}
+
+.quiz-card p {
+    color: #555;
+}
+
+.start-btn,
+.submit-btn,
+.back-btn,
+.retry-btn {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.start-btn {
+    background: #198754;
+    color: white;
+}
+
+.submit-btn {
+    background: #126b3a;
+    color: white;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.back-btn {
+    background: #555;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.retry-btn {
+    background: #198754;
+    color: white;
+    margin-top: 10px;
+}
+
+/* QUIZ */
+.quiz-page {
+    display: none;
+}
+
+.quiz-title {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.question {
+    background: white;
+    margin-bottom: 18px;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.question h3 {
+    margin-top: 0;
+    line-height: 1.5;
+}
+
+.option {
+    display: block;
+    padding: 12px;
+    margin: 8px 0;
+    background: #f6f8f6;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #e8f5ec;
+}
+
+.option input {
+    margin-right: 10px;
+}
+
+.result {
+    display: none;
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-top: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.score {
+    font-size: 35px;
+    color: #198754;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #666;
+}
+
+/* MOBILE */
+@media(max-width:600px) {
+
+    header h1 {
+        font-size: 27px;
+    }
+
+    header p {
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 15px 10px;
+    }
+
+    .quiz-card {
+        padding: 20px;
+    }
+
+    .question {
+        padding: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ICAR Quiz Challenge</h1>
+    <p>Test Your Agriculture & ICAR Knowledge</p>
+</header>
+
+<div class="container">
+
+<!-- ================= HOME ================= -->
+
+<div id="home">
+
+    <div class="quiz-card" onclick="openQuiz(1)">
+        <h2>🌱 Quiz 1 – ICAR Basics</h2>
+        <p>10 MCQs on ICAR, agricultural research and important institutions.</p>
+        <button class="start-btn">Start Quiz</button>
+    </div>
+
+    <div class="quiz-card" onclick="openQuiz(2)">
+        <h2>🌾 Quiz 2 – Agriculture Science</h2>
+        <p>10 MCQs covering crops, soil, plant science and agricultural concepts.</p>
+        <button class="start-btn">Start Quiz</button>
+    </div>
+
+    <div class="quiz-card" onclick="openQuiz(3)">
+        <h2>🌿 Quiz 3 – Crop & Soil Science</h2>
+        <p>10 MCQs on soil, irrigation, fertilizers, crop rotation and agronomy.</p>
+        <button class="start-btn">Start Quiz</button>
+    </div>
+
+    <div class="quiz-card" onclick="openQuiz(4)">
+        <h2>🎓 Quiz 4 – ICAR Entrance Level</h2>
+        <p>10 exam-oriented MCQs for agriculture and ICAR entrance preparation.</p>
+        <button class="start-btn">Start Quiz</button>
+    </div>
+
+</div>
+
+
+<!-- ================= QUIZ 1 ================= -->
+
+<div id="quiz1" class="quiz-page">
+
+<button class="back-btn" onclick="goHome()">← Back to Quizzes</button>
+
+<div class="quiz-title">
+    <h2>🌱 Quiz 1 – ICAR Basics</h2>
+    <p>Choose the correct answer.</p>
+</div>
+
+<form id="form1">
+
+<div class="question">
+<h3>1. What is the full form of ICAR?</h3>
+
+<label class="option"><input type="radio" name="q1" value="A"> A. Indian Council of Agricultural Research</label>
+<label class="option"><input type="radio" name="q1" value="B"> B. Indian Committee of Agricultural Research</label>
+<label class="option"><input type="radio" name="q1" value="C"> C. Indian Centre for Agricultural Resources</label>
+<label class="option"><input type="radio" name="q1" value="D"> D. Institute of Indian Agricultural Research</label>
+</div>
+
+
+<div class="question">
+<h3>2. In which year was ICAR established?</h3>
+
+<label class="option"><input type="radio" name="q2" value="A"> A. 1929</label>
+<label class="option"><input type="radio" name="q2" value="B"> B. 1935</label>
+<label class="option"><input type="radio" name="q2" value="C"> C. 1947</label>
+<label class="option"><input type="radio" name="q2" value="D"> D. 1950</label>
+</div>
+
+
+<div class="question">
+<h3>3. Where is the headquarters of ICAR located?</h3>
+
+<label class="option"><input type="radio" name="q3" value="A"> A. New Delhi</label>
+<label class="option"><input type="radio" name="q3" value="B"> B. Lucknow</label>
+<label class="option"><input type="radio" name="q3" value="C"> C. Hyderabad</label>
+<label class="option"><input type="radio" name="q3" value="D"> D. Bhopal</label>
+</div>
+
+
+<div class="question">
+<h3>4. ICAR primarily deals with:</h3>
+
+<label class="option"><input type="radio" name="q4" value="A"> A. Agricultural research and education</label>
+<label class="option"><input type="radio" name="q4" value="B"> B. Railway development</label>
+<label class="option"><input type="radio" name="q4" value="C"> C. Banking regulation</label>
+<label class="option"><input type="radio" name="q4" value="D"> D. Space research</label>
+</div>
+
+
+<div class="question">
+<h3>5. IARI stands for:</h3>
+
+<label class="option"><input type="radio" name="q5" value="A"> A. Indian Agricultural Research Institute</label>
+<label class="option"><input type="radio" name="q5" value="B"> B. Indian Agro Research Institute</label>
+<label class="option"><input type="radio" name="q5" value="C"> C. Indian Agriculture Resource Institute</label>
+<label class="option"><input type="radio" name="q5" value="D"> D. Institute of Agricultural Research in India</label>
+</div>
+
+
+<div class="question">
+<h3>6. ICAR works under which Union Ministry?</h3>
+
+<label class="option"><input type="radio" name="q6" value="A"> A. Ministry of Agriculture & Farmers Welfare</label>
+<label class="option"><input type="radio" name="q6" value="B"> B. Ministry of Education</label>
+<label class="option"><input type="radio" name="q6" value="C"> C. Ministry of Environment</label>
+<label class="option"><input type="radio" name="q6" value="D"> D. Ministry of Finance</label>
+</div>
+
+
+<div class="question">
+<h3>7. IARI is commonly known as:</h3>
+
+<label class="option"><input type="radio" name="q7" value="A"> A. Pusa Institute</label>
+<label class="option"><input type="radio" name="q7" value="B"> B. Deccan Institute</label>
+<label class="option"><input type="radio" name="q7" value="C"> C. Green Institute</label>
+<label class="option"><input type="radio" name="q7" value="D"> D. National Crop Institute</label>
+</div>
+
+
+<div class="question">
+<h3>8. The main objective of agricultural research is to:</h3>
+
+<label class="option"><input type="radio" name="q8" value="A"> A. Improve agricultural productivity and sustainability</label>
+<label class="option"><input type="radio" name="q8" value="B"> B. Reduce crop diversity</label>
+<label class="option"><input type="radio" name="q8" value="C"> C. Eliminate irrigation</label>
+<label class="option"><input type="radio" name="q8" value="D"> D. Stop crop improvement</label>
+</div>
+
+
+<div class="question">
+<h3>9. Agricultural education mainly helps in developing:</h3>
+
+<label class="option"><input type="radio" name="q9" value="A"> A. Skilled agricultural professionals</label>
+<label class="option"><input type="radio" name="q9" value="B"> B. Railway engineers only</label>
+<label class="option"><input type="radio" name="q9" value="C"> C. Bank auditors only</label>
+<label class="option"><input type="radio" name="q9" value="D"> D. Astronauts only</label>
+</div>
+
+
+<div class="question">
+<h3>10. Which of these is an agricultural research area?</h3>
+
+<label class="option"><input type="radio" name="q10" value="A"> A. Crop improvement</label>
+<label class="option"><input type="radio" name="q10" value="B"> B. Railway signalling</label>
+<label class="option"><input type="radio" name="q10" value="C"> C. Air traffic control</label>
+<label class="option"><input type="radio" name="q10" value="D"> D. Banking law</label>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkQuiz(1, ['A','A','A','A','A','A','A','A','A','A'])">
+Submit Quiz
+</button>
+
+</form>
+
+<div id="result1" class="result"></div>
+
+</div>
+
+
+<!-- ================= QUIZ 2 ================= -->
+
+<div id="quiz2" class="quiz-page">
+
+<button class="back-btn" onclick="goHome()">← Back to Quizzes</button>
+
+<div class="quiz-title">
+<h2>🌾 Quiz 2 – Agriculture Science</h2>
+<p>Test your basic agriculture and biological science knowledge.</p>
+</div>
+
+<form id="form2">
+
+<div class="question">
+<h3>1. Which pigment is mainly responsible for photosynthesis?</h3>
+<label class="option"><input type="radio" name="q1" value="A"> A. Chlorophyll</label>
+<label class="option"><input type="radio" name="q1" value="B"> B. Haemoglobin</label>
+<label class="option"><input type="radio" name="q1" value="C"> C. Melanin</label>
+<label class="option"><input type="radio" name="q1" value="D"> D. Keratin</label>
+</div>
+
+<div class="question">
+<h3>2. Photosynthesis mainly takes place in which organelle?</h3>
+<label class="option"><input type="radio" name="q2" value="A"> A. Chloroplast</label>
+<label class="option"><input type="radio" name="q2" value="B"> B. Ribosome</label>
+<label class="option"><input type="radio" name="q2" value="C"> C. Nucleus</label>
+<label class="option"><input type="radio" name="q2" value="D"> D. Golgi apparatus</label>
+</div>
+
+<div class="question">
+<h3>3. Rhizobium is associated mainly with:</h3>
+<label class="option"><input type="radio" name="q3" value="A"> A. Nitrogen fixation in legumes</label>
+<label class="option"><input type="radio" name="q3" value="B"> B. Photosynthesis</label>
+<label class="option"><input type="radio" name="q3" value="C"> C. Pollination</label>
+<label class="option"><input type="radio" name="q3" value="D"> D. Seed dispersal</label>
+</div>
+
+<div class="question">
+<h3>4. Which of the following is a cereal crop?</h3>
+<label class="option"><input type="radio" name="q4" value="A"> A. Wheat</label>
+<label class="option"><input type="radio" name="q4" value="B"> B. Gram</label>
+<label class="option"><input type="radio" name="q4" value="C"> C. Mustard</label>
+<label class="option"><input type="radio" name="q4" value="D"> D. Pea</label>
+</div>
+
+<div class="question">
+<h3>5. Which crop is generally classified as a pulse?</h3>
+<label class="option"><input type="radio" name="q5" value="A"> A. Chickpea</label>
+<label class="option"><input type="radio" name="q5" value="B"> B. Wheat</label>
+<label class="option"><input type="radio" name="q5" value="C"> C. Rice</label>
+<label class="option"><input type="radio" name="q5" value="D"> D. Maize</label>
+</div>
+
+<div class="question">
+<h3>6. Which nutrient is required in relatively large quantities by plants?</h3>
+<label class="option"><input type="radio" name="q6" value="A"> A. Nitrogen</label>
+<label class="option"><input type="radio" name="q6" value="B"> B. Boron</label>
+<label class="option"><input type="radio" name="q6" value="C"> C. Zinc</label>
+<label class="option"><input type="radio" name="q6" value="D"> D. Molybdenum</label>
+</div>
+
+<div class="question">
+<h3>7. Which process converts atmospheric nitrogen into usable nitrogen compounds through biological activity?</h3>
+<label class="option"><input type="radio" name="q7" value="A"> A. Biological nitrogen fixation</label>
+<label class="option"><input type="radio" name="q7" value="B"> B. Transpiration</label>
+<label class="option"><input type="radio" name="q7" value="C"> C. Respiration</label>
+<label class="option"><input type="radio" name="q7" value="D"> D. Germination</label>
+</div>
+
+<div class="question">
+<h3>8. Which part of a plant absorbs most water from soil?</h3>
+<label class="option"><input type="radio" name="q8" value="A"> A. Root hairs</label>
+<label class="option"><input type="radio" name="q8" value="B"> B. Flowers</label>
+<label class="option"><input type="radio" name="q8" value="C"> C. Fruits</label>
+<label class="option"><input type="radio" name="q8" value="D"> D. Seeds</label>
+</div>
+
+<div class="question">
+<h3>9. Which gas is released during photosynthesis?</h3>
+<label class="option"><input type="radio" name="q9" value="A"> A. Oxygen</label>
+<label class="option"><input type="radio" name="q9" value="B"> B. Nitrogen</label>
+<label class="option"><input type="radio" name="q9" value="C"> C. Methane</label>
+<label class="option"><input type="radio" name="q9" value="D"> D. Hydrogen</label>
+</div>
+
+<div class="question">
+<h3>10. Which is a kharif crop?</h3>
+<label class="option"><input type="radio" name="q10" value="A"> A. Rice</label>
+<label class="option"><input type="radio" name="q10" value="B"> B. Wheat</label>
+<label class="option"><input type="radio" name="q10" value="C"> C. Gram</label>
+<label class="option"><input type="radio" name="q10" value="D"> D. Mustard</label>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkQuiz(2, ['A','A','A','A','A','A','A','A','A','A'])">
+Submit Quiz
+</button>
+
+</form>
+
+<div id="result2" class="result"></div>
+
+</div>
+
+
+<!-- ================= QUIZ 3 ================= -->
+
+<div id="quiz3" class="quiz-page">
+
+<button class="back-btn" onclick="goHome()">← Back to Quizzes</button>
+
+<div class="quiz-title">
+<h2>🌿 Quiz 3 – Crop & Soil Science</h2>
+<p>Questions on soil, irrigation, fertilizers and crop management.</p>
+</div>
+
+<form id="form3">
+
+<div class="question">
+<h3>1. Soil with pH below 7 is generally:</h3>
+<label class="option"><input type="radio" name="q1" value="A"> A. Acidic</label>
+<label class="option"><input type="radio" name="q1" value="B"> B. Alkaline</label>
+<label class="option"><input type="radio" name="q1" value="C"> C. Neutral</label>
+<label class="option"><input type="radio" name="q1" value="D"> D. Saline only</label>
+</div>
+
+<div class="question">
+<h3>2. Which irrigation method supplies water close to the plant root zone?</h3>
+<label class="option"><input type="radio" name="q2" value="A"> A. Drip irrigation</label>
+<label class="option"><input type="radio" name="q2" value="B"> B. Flood irrigation</label>
+<label class="option"><input type="radio" name="q2" value="C"> C. Basin flooding</label>
+<label class="option"><input type="radio" name="q2" value="D"> D. Wild flooding</label>
+</div>
+
+<div class="question">
+<h3>3. Which fertilizer is a major source of nitrogen?</h3>
+<label class="option"><input type="radio" name="q3" value="A"> A. Urea</label>
+<label class="option"><input type="radio" name="q3" value="B"> B. Muriate of potash</label>
+<label class="option"><input type="radio" name="q3" value="C"> C. Gypsum</label>
+<label class="option"><input type="radio" name="q3" value="D"> D. Lime</label>
+</div>
+
+<div class="question">
+<h3>4. The process of growing different crops sequentially on the same field is called:</h3>
+<label class="option"><input type="radio" name="q4" value="A"> A. Crop rotation</label>
+<label class="option"><input type="radio" name="q4" value="B"> B. Monoculture</label>
+<label class="option"><input type="radio" name="q4" value="C"> C. Mulching</label>
+<label class="option"><input type="radio" name="q4" value="D"> D. Threshing</label>
+</div>
+
+<div class="question">
+<h3>5. Which soil particle is the largest?</h3>
+<label class="option"><input type="radio" name="q5" value="A"> A. Sand</label>
+<label class="option"><input type="radio" name="q5" value="B"> B. Silt</label>
+<label class="option"><input type="radio" name="q5" value="C"> C. Clay</label>
+<label class="option"><input type="radio" name="q5" value="D"> D. Humus</label>
+</div>
+
+<div class="question">
+<h3>6. Which soil component is mainly responsible for improving soil organic matter?</h3>
+<label class="option"><input type="radio" name="q6" value="A"> A. Humus</label>
+<label class="option"><input type="radio" name="q6" value="B"> B. Quartz</label>
+<label class="option"><input type="radio" name="q6" value="C"> C. Gravel</label>
+<label class="option"><input type="radio" name="q6" value="D"> D. Feldspar only</label>
+</div>
+
+<div class="question">
+<h3>7. Which practice helps reduce soil erosion?</h3>
+<label class="option"><input type="radio" name="q7" value="A"> A. Contour farming</label>
+<label class="option"><input type="radio" name="q7" value="B"> B. Excessive tillage</label>
+<label class="option"><input type="radio" name="q7" value="C"> C. Removal of vegetation</label>
+<label class="option"><input type="radio" name="q7" value="D"> D. Continuous bare fallowing</label>
+</div>
+
+<div class="question">
+<h3>8. Which macronutrient is represented by the symbol K?</h3>
+<label class="option"><input type="radio" name="q8" value="A"> A. Potassium</label>
+<label class="option"><input type="radio" name="q8" value="B"> B. Calcium</label>
+<label class="option"><input type="radio" name="q8" value="C"> C. Nitrogen</label>
+<label class="option"><input type="radio" name="q8" value="D"> D. Phosphorus</label>
+</div>
+
+<div class="question">
+<h3>9. Which of the following is a micro-irrigation method?</h3>
+<label class="option"><input type="radio" name="q9" value="A"> A. Drip irrigation</label>
+<label class="option"><input type="radio" name="q9" value="B"> B. Flooding</label>
+<label class="option"><input type="radio" name="q9" value="C"> C. Basin irrigation</label>
+<label class="option"><input type="radio" name="q9" value="D"> D. Check irrigation</label>
+</div>
+
+<div class="question">
+<h3>10. Which practice can help conserve soil moisture?</h3>
+<label class="option"><input type="radio" name="q10" value="A"> A. Mulching</label>
+<label class="option"><input type="radio" name="q10" value="B"> B. Burning crop residues</label>
+<label class="option"><input type="radio" name="q10" value="C"> C. Removing all ground cover</label>
+<label class="option"><input type="radio" name="q10" value="D"> D. Excessive tillage</label>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkQuiz(3, ['A','A','A','A','A','A','A','A','A','A'])">
+Submit Quiz
+</button>
+
+</form>
+
+<div id="result3" class="result"></div>
+
+</div>
+
+
+<!-- ================= QUIZ 4 ================= -->
+
+<div id="quiz4" class="quiz-page">
+
+<button class="back-btn" onclick="goHome()">← Back to Quizzes</button>
+
+<div class="quiz-title">
+<h2>🎓 Quiz 4 – ICAR Entrance Level</h2>
+<p>Exam-oriented agriculture MCQs.</p>
+</div>
+
+<form id="form4">
+
+<div class="question">
+<h3>1. Which of the following is an example of integrated pest management?</h3>
+<label class="option"><input type="radio" name="q1" value="A"> A. Combining suitable cultural, biological and chemical methods</label>
+<label class="option"><input type="radio" name="q1" value="B"> B. Using only one pesticide repeatedly</label>
+<label class="option"><input type="radio" name="q1" value="C"> C. Avoiding all pest monitoring</label>
+<label class="option"><input type="radio" name="q1" value="D"> D. Increasing pesticide dose every season</label>
+</div>
+
+<div class="question">
+<h3>2. What is the main purpose of crop rotation?</h3>
+<label class="option"><input type="radio" name="q2" value="A"> A. Improve soil health and break pest cycles</label>
+<label class="option"><input type="radio" name="q2" value="B"> B. Grow only one crop forever</label>
+<label class="option"><input type="radio" name="q2" value="C"> C. Eliminate soil organisms</label>
+<label class="option"><input type="radio" name="q2" value="D"> D. Prevent all irrigation</label>
+</div>
+
+<div class="question">
+<h3>3. Agroforestry refers to the deliberate integration of:</h3>
+<label class="option"><input type="radio" name="q3" value="A"> A. Trees with crops and/or livestock</label>
+<label class="option"><input type="radio" name="q3" value="B"> B. Only aquatic plants</label>
+<label class="option"><input type="radio" name="q3" value="C"> C. Only cereals</label>
+<label class="option"><input type="radio" name="q3" value="D"> D. Only ornamental plants</label>
+</div>
+
+<div class="question">
+<h3>4. Which organization is associated with international agricultural research through the CGIAR system?</h3>
+<label class="option"><input type="radio" name="q4" value="A"> A. CGIAR</label>
+<label class="option"><input type="radio" name="q4" value="B"> B. FIFA</label>
+<label class="option"><input type="radio" name="q4" value="C"> C. ICAO</label>
+<label class="option"><input type="radio" name="q4" value="D"> D. IMO</label>
+</div>
+
+<div class="question">
+<h3>5. Heterosis is commonly associated with:</h3>
+<label class="option"><input type="radio" name="q5" value="A"> A. Hybrid vigour</label>
+<label class="option"><input type="radio" name="q5" value="B"> B. Soil erosion</label>
+<label class="option"><input type="radio" name="q5" value="C"> C. Seed dormancy only</label>
+<label class="option"><input type="radio" name="q5" value="D"> D. Waterlogging</label>
+</div>
+
+<div class="question">
+<h3>6. Which breeding method involves crossing genetically different parents?</h3>
+<label class="option"><input type="radio" name="q6" value="A"> A. Hybridization</label>
+<label class="option"><input type="radio" name="q6" value="B"> B. Irrigation</label>
+<label class="option"><input type="radio" name="q6" value="C"> C. Threshing</label>
+<label class="option"><input type="radio" name="q6" value="D"> D. Mulching</label>
+</div>
+
+<div class="question">
+<h3>7. Which of the following is a C4 crop?</h3>
+<label class="option"><input type="radio" name="q7" value="A"> A. Maize</label>
+<label class="option"><input type="radio" name="q7" value="B"> B. Wheat</label>
+<label class="option"><input type="radio" name="q7" value="C"> C. Rice</label>
+<label class="option"><input type="radio" name="q7" value="D"> D. Potato</label>
+</div>
+
+<div class="question">
+<h3>8. The term evapotranspiration represents water loss through:</h3>
+<label class="option"><input type="radio" name="q8" value="A"> A. Evaporation and plant transpiration</label>
+<label class="option"><input type="radio" name="q8" value="B"> B. Only rainfall</label>
+<label class="option"><input type="radio" name="q8" value="C"> C. Only irrigation</label>
+<label class="option"><input type="radio" name="q8" value="D"> D. Only runoff</label>
+</div>
+
+<div class="question">
+<h3>9. Which of the following is a biological control agent used against some agricultural pests?</h3>
+<label class="option"><input type="radio" name="q9" value="A"> A. Trichogramma</label>
+<label class="option"><input type="radio" name="q9" value="B"> B. Urea</label>
+<label class="option"><input type="radio" name="q9" value="C"> C. Gypsum</label>
+<label class="option"><input type="radio" name="q9" value="D"> D. Potassium chloride</label>
+</div>
+
+<div class="question">
+<h3>10. Seed certification primarily helps maintain:</h3>
+<label class="option"><input type="radio" name="q10" value="A"> A. Genetic identity and required quality standards</label>
+<label class="option"><input type="radio" name="q10" value="B"> B. Soil pH</label>
+<label class="option"><input type="radio" name="q10" value="C"> C. Rainfall</label>
+<label class="option"><input type="radio" name="q10" value="D"> D. Irrigation pressure</label>
+</div>
+
+<button type="button" class="submit-btn" onclick="checkQuiz(4, ['A','A','A','A','A','A','A','A','A','A'])">
+Submit Quiz
+</button>
+
+</form>
+
+<div id="result4" class="result"></div>
+
+</div>
+
+</div>
+
+
+<footer>
+ICAR Quiz Challenge | Agriculture Knowledge
+</footer>
+
+
+<script>
+
+function openQuiz(number) {
+
+    document.getElementById("home").style.display = "none";
+
+    document.querySelectorAll(".quiz-page").forEach(function(page) {
+        page.style.display = "none";
+    });
+
+    document.getElementById("quiz" + number).style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function goHome() {
+
+    document.querySelectorAll(".quiz-page").forEach(function(page) {
+        page.style.display = "none";
+    });
+
+    document.getElementById("home").style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function checkQuiz(quizNumber, answers) {
+
+    let form = document.getElementById("form" + quizNumber);
+
+    let score = 0;
+
+    for (let i = 1; i <= answers.length; i++) {
+
+        let selected = form.querySelector(
+            'input[name="q' + i + '"]:checked'
+        );
+
+        if (selected && selected.value === answers[i - 1]) {
+            score++;
+        }
+    }
+
+    let result = document.getElementById("result" + quizNumber);
+
+    let percentage = (score / answers.length) * 100;
+
+    let message = "";
+
+    if (percentage === 100) {
+        message = "Excellent! Perfect Score 🎉";
+    }
+    else if (percentage >= 80) {
+        message = "Excellent performance!";
+    }
+    else if (percentage >= 60) {
+        message = "Good job! Keep practicing.";
+    }
+    else if (percentage >= 40) {
+        message = "Good attempt. More practice will help.";
+    }
+    else {
+        message = "Keep studying and try again!";
+    }
+
+    result.innerHTML = `
+        <h2>Your Result</h2>
+        <div class="score">${score} / ${answers.length}</div>
+        <p>${percentage}%</p>
+        <h3>${message}</h3>
+        <button class="retry-btn" onclick="location.reload()">
+            Try Again
+        </button>
+    `;
+
+    result.style.display = "block";
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+</script>
+
+</body>
+</html>
